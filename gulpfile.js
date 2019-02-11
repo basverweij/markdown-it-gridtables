@@ -5,10 +5,16 @@ var mocha = require('gulp-mocha');
 function build(cb) {
     var tsProject = ts.createProject("tsconfig.json");
 
-    tsProject
+    var tsResult = tsProject
         .src()
-        .pipe(tsProject())
+        .pipe(tsProject());
+
+    tsResult
         .js
+        .pipe(dest("dist"));
+
+    tsResult
+        .dts
         .pipe(dest("dist"));
 
     cb();

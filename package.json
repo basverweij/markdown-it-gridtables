@@ -4,7 +4,7 @@
   "description": "MarkdownIt plugin for Pandoc Grid Tables",
   "main": "dist/index.js",
   "files": [
-    "dist/**/*"
+    "dist"
   ],
   "directories": {
     "test": "test"

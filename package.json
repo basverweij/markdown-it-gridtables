@@ -1,0 +1,45 @@
+{
+  "name": "markdown-it-gridtables",
+  "version": "0.1.0",
+  "description": "MarkdownIt plugin for Pandoc Grid Tables",
+  "main": "dist/index.js",
+  "files": [
+    "dist/**/*"
+  ],
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "ts-node": "^8.0.2"
+  },
+  "devDependencies": {
+    "@types/markdown-it": "0.0.7",
+    "@types/mocha": "^5.2.5",
+    "@types/node": "^10.12.21",
+    "chai": "^4.2.0",
+    "gulp": "^4.0.0",
+    "gulp-mocha": "^6.0.0",
+    "gulp-typescript": "^5.0.0",
+    "markdown-it": "^8.4.2",
+    "mocha": "^5.2.0",
+    "typescript": "^3.3.1"
+  },
+  "scripts": {
+    "test": "mocha -r ts-node/register test/**/*.spec.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/basverweij/markdown-it-gridtables.git"
+  },
+  "keywords": [
+    "markdown-it",
+    "plugin",
+    "gridtables"
+  ],
+  "author": "Bas Verweij",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/basverweij/markdown-it-gridtables/issues"
+  },
+  "homepage": "https://github.com/basverweij/markdown-it-gridtables#readme"
+}

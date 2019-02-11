@@ -1,6 +1,6 @@
 import { IMarkdownItState } from "../interfaces/IMarkdownItState";
-import { GetCharCodeAtStartOfLine, GetLine, ParseTable, EmitTable } from "../common/markdown-it-util";
-import { IMarkdownIt } from "../interfaces/IMarkdownIt";
+import { GetCharCodeAtStartOfLine, ParseTable, EmitTable } from "../common/markdown-it-util";
+import * as MarkdownIt from "markdown-it";
 
 type RuleFunction = (
     state: IMarkdownItState,
@@ -9,7 +9,7 @@ type RuleFunction = (
     silent: boolean) => boolean;
 
 export function GridTableRule(
-    md: IMarkdownIt):
+    md: MarkdownIt):
     RuleFunction {
 
     return function (

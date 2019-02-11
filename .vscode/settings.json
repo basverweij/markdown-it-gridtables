@@ -5,9 +5,23 @@
         "**/.hg": true,
         "**/CVS": true,
         "**/.DS_Store": true,
-        "**/*.js2": {
+        "**/*.js": {
             "when": "$(basename).ts"
         },
         "**/*.js.map": true
+    },
+    "mocha.requires": [
+        "ts-node/register"
+    ],
+    "mocha.files.glob": "test/**/*.ts",
+    "mocha.coverage": {
+        "enable": true,
+        "decoration": true,
+        "runWithInterval": false,
+        "autoUpdateInterval": 20000,
+        "activeOnStart": true,
+        "runAfterTest": true,
+        "runCoverageAfterFileSave": false,
+        "reporters": []
     }
 }

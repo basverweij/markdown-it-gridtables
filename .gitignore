@@ -1,2 +1,8 @@
 src/**/*.js
 src/**/*.js.map
+node_modules
+.nyc_output
+coverage
+dist
+tmp
+*.tgz

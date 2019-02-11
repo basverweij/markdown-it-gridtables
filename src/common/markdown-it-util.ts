@@ -1,6 +1,6 @@
 import { IMarkdownItState } from "../interfaces/IMarkdownItState";
 import { GetCells } from "./gridtables-util";
-import { IMarkdownIt } from "../interfaces/IMarkdownIt";
+import * as MarkdownIt from "markdown-it";
 
 export function GetLine(
     state: IMarkdownItState,
@@ -44,9 +44,9 @@ class ParseTableResult {
 
     ColumnOffsets: number[];
 
-    HeaderLines: string[];
+    HeaderLines: string[] = [];
 
-    RowLines: string[][];
+    RowLines: string[][] = [];
 
     CurrentLine: number;
 }
@@ -61,9 +61,13 @@ export function ParseTable(
 
     let rowLine = GetLine(state, startLine);
 
-    result.ColumnWidths = rowLine
-        .match(/[-]{3,}\+/g)
-        .map(s => s.length);
+    let columnMatch = rowLine.match(/[-]{3,}\+/g);
+
+    if (columnMatch == null) {
+        return result;
+    }
+
+    result.ColumnWidths = columnMatch.map(s => s.length);
 
     if (result.ColumnWidths.length < 1) {
         // no columns found
@@ -155,7 +159,7 @@ export function ParseTable(
 }
 
 export function EmitTable(
-    md: IMarkdownIt,
+    md: MarkdownIt,
     state: IMarkdownItState,
     result: ParseTableResult) {
 
@@ -193,7 +197,7 @@ export function EmitTable(
 }
 
 function ProcessRow(
-    md: IMarkdownIt,
+    md: MarkdownIt,
     state: IMarkdownItState,
     tag: string,
     cells: string[][]) {

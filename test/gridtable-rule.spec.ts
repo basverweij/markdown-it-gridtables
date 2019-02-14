@@ -10,11 +10,25 @@ describe("gridtable rule", () => {
 
         md.use(GridTable);
 
-        let input = readFile("./test/test.md");
+        let input = readFile("./test/basic.md");
 
         let actual = md.render(input);
 
-        let expected = readFile("./test/test.md.html");
+        let expected = readFile("./test/basic.md.html");
+
+        expect(actual).to.equal(expected);
+    });
+
+    it("should parse gridtables with column alignments", () => {
+        let md = MarkdownIt();
+
+        md.use(GridTable);
+
+        let input = readFile("./test/col-align.md");
+
+        let actual = md.render(input);
+
+        let expected = readFile("./test/col-align.md.html");
 
         expect(actual).to.equal(expected);
     });

@@ -37,12 +37,23 @@ export function GetCharCodeAtStartOfLine(
     return state.src.charCodeAt(pos);
 }
 
+enum ColumnAlignments {
+    None = "",
+    Left = "left",
+    Center = "center",
+    Right = "right",
+}
+
 class ParseTableResult {
     Success: boolean = false;
 
     ColumnWidths: number[];
 
     ColumnOffsets: number[];
+
+    ColumnAlignments: ColumnAlignments[];
+
+    HeaderLess: boolean = false;
 
     HeaderLines: string[] = [];
 
@@ -61,21 +72,50 @@ export function ParseTable(
 
     let rowLine = GetLine(state, startLine);
 
-    let columnMatch = rowLine.match(/[-]{3,}\+/g);
+    if (rowLine.charAt(0) != "+") {
+        // line does not start with a '+'
+        return result;
+    }
+
+    let columnMatch = rowLine
+        .substr(1)
+        .match(/[:-][-]+[:-]\+/g);
 
     if (columnMatch == null) {
         return result;
     }
 
-    result.ColumnWidths = columnMatch.map(s => s.length);
+    result.ColumnWidths = columnMatch
+        .map(s => s.length);
+
+    result.ColumnAlignments = columnMatch
+        .map(_ => ColumnAlignments.None);
 
     if (result.ColumnWidths.length < 1) {
         // no columns found
         return result;
     }
 
-    // build header line for matching
-    let headerLine = rowLine.replace(/[-]/g, "=");
+    if (rowLine.indexOf(":") >= 0) {
+        // column alignment specifiers present in first row line
+        result.HeaderLess = true;
+
+        // set column alignments
+        result.ColumnAlignments = getColumnAlignments(
+            rowLine,
+            result.ColumnWidths);
+
+        // remove alignment specifiers for further matching
+        rowLine = rowLine.replace(/[:]/g, "-");
+    }
+
+    // create header line matcher
+    let headerLineMatcher = new RegExp(
+        "^\\+" +
+        result.ColumnWidths
+            .map(w => "[=:][=]{" + (w - 3) + "}[=:]\\+")
+            .join("") +
+        "$");
 
     // build column offsets
     result.ColumnOffsets = [0];
@@ -111,7 +151,14 @@ export function ParseTable(
             if (line == rowLine) {
                 // new regular row
                 result.RowLines.push(currentRow);
-            } else if (line == headerLine) {
+
+                if (result.HeaderLines.length == 0) {
+                    result.HeaderLess = true;
+                }
+            } else if (!result.HeaderLess &&
+                line.match(headerLineMatcher)) {
+                // found header line
+
                 if (result.HeaderLines.length > 0 ||
                     result.RowLines.length > 0) {
                     // header already found, or not the first row -> invalid table
@@ -120,6 +167,13 @@ export function ParseTable(
 
                 // header row
                 result.HeaderLines = currentRow;
+
+                if (line.indexOf(":") >= 0) {
+                    // set column alignments
+                    result.ColumnAlignments = getColumnAlignments(
+                        line,
+                        result.ColumnWidths);
+                }
             } else {
                 // not a header or regular row -> invalid table
                 return result;
@@ -158,6 +212,39 @@ export function ParseTable(
     return result;
 }
 
+function getColumnAlignments(
+    line: string,
+    columnWidths: number[]):
+    ColumnAlignments[] {
+
+    let alignments: ColumnAlignments[] = [];
+
+    let left = 1;
+    let right = -1;
+
+    for (let i = 0; i < columnWidths.length; i++) {
+        right += columnWidths[i];
+
+        let alignment = ColumnAlignments.None;
+
+        if (line.charAt(right) == ":") {
+            if (line.charAt(left) == ":") {
+                alignment = ColumnAlignments.Center;
+            } else {
+                alignment = ColumnAlignments.Right;
+            }
+        } else if (line.charAt(left) == ":") {
+            alignment = ColumnAlignments.Left;
+        }
+
+        alignments.push(alignment);
+
+        left += columnWidths[i];
+    }
+
+    return alignments;
+}
+
 export function EmitTable(
     md: MarkdownIt,
     state: IMarkdownItState,
@@ -174,7 +261,7 @@ export function EmitTable(
             result.ColumnOffsets,
             result.HeaderLines);
 
-        ProcessRow(md, state, 'th', cells);
+        ProcessRow(md, state, 'th', result.ColumnAlignments, cells);
 
         state.push('thead_close', 'thead', -1);
     }
@@ -188,7 +275,7 @@ export function EmitTable(
             result.ColumnOffsets,
             result.RowLines[i]);
 
-        ProcessRow(md, state, 'td', cells);
+        ProcessRow(md, state, 'td', result.ColumnAlignments, cells);
     }
 
     state.push('tbody_close', 'tbody', -1);
@@ -200,12 +287,17 @@ function ProcessRow(
     md: MarkdownIt,
     state: IMarkdownItState,
     tag: string,
+    columnAlignments: ColumnAlignments[],
     cells: string[][]) {
 
     state.push('tr_open', 'tr', 1);
 
     for (let i = 0; i < cells.length; i++) {
-        state.push(tag + '_open', tag, 1);
+        let token = state.push(tag + '_open', tag, 1);
+
+        if (columnAlignments[i] != ColumnAlignments.None) {
+            token.attrs = [["style", `text-align: ${columnAlignments[i]};`]];
+        }
 
         if (cells[i].length == 0) {
             // empty cell
@@ -229,7 +321,7 @@ function ProcessRow(
                 cell = cell.substr(3, cell.length - 7);
             }
 
-            var token = state.push('html_block', '', 0);
+            let token = state.push('html_block', '', 0);
             token.content = cell;
             token.children = [];
         }

@@ -1,10 +1,24 @@
-export function GetColumnWidths(
-    separatorLine: string):
+/**
+ * getColumnWidths parses the provided line and returns the associated column widths.
+ * 
+ * @param line The separator line to parse for the column widths.
+ * @returns The column widths for the provided line, or an empty array if the line is invalid. 
+ */
+export function getColumnWidths(
+    line: string):
     number[] {
 
-    let columnMatch = separatorLine
+    // try to parse as a row separator line
+    let columnMatch = line
         .substr(1)
         .match(/[:-][-]+[:-]\+/g);
+
+    if (columnMatch == null) {
+        // try to parse as a header separator line
+        columnMatch = line
+            .substr(1)
+            .match(/[:=][=]+[:=]\+/g);
+    }
 
     if (columnMatch == null) {
         return [];
@@ -13,7 +27,15 @@ export function GetColumnWidths(
     return columnMatch.map(s => s.length);
 }
 
-export function GetCells(
+/**
+ * getCells parses the lines found for a certain row, and transforms these to
+ * the separate cell lines.
+ * 
+ * @param columnWidths The column widths for this table.
+ * @param columnOffsets The absolute column offsets for this table. 
+ * @param lines The lines for the row.
+ */
+export function getCells(
     columnWidths: number[],
     columnOffsets: number[],
     lines: string[]):

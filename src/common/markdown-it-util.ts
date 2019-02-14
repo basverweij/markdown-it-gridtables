@@ -1,5 +1,5 @@
 import { IMarkdownItState } from "../interfaces/IMarkdownItState";
-import { GetCells, GetColumnWidths } from "./gridtables-util";
+import { getCells, getColumnWidths } from "./gridtables-util";
 import * as MarkdownIt from "markdown-it";
 
 export function GetLine(
@@ -79,7 +79,7 @@ export function ParseTable(
         return result;
     }
 
-    result.ColumnWidths = GetColumnWidths(rowLine);
+    result.ColumnWidths = getColumnWidths(rowLine);
 
     if (result.ColumnWidths.length == 0) {
         // no columns found
@@ -259,7 +259,7 @@ export function EmitTable(
         let token = state.push('thead_open', 'thead', 1);
         token.map = [offsets[0], offsets[1]];
 
-        let cells = GetCells(
+        let cells = getCells(
             result.ColumnWidths,
             result.ColumnOffsets,
             result.HeaderLines);
@@ -276,7 +276,7 @@ export function EmitTable(
     token.map = [offsets[0], offsets[offsets.length - 1]];
 
     for (let i = 0; i < result.RowLines.length; i++) {
-        let cells = GetCells(
+        let cells = getCells(
             result.ColumnWidths,
             result.ColumnOffsets,
             result.RowLines[i]);

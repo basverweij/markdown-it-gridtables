@@ -59,6 +59,8 @@ class ParseTableResult {
 
     RowLines: string[][] = [];
 
+    SeparatorLineOffsets: number[] = [];
+
     CurrentLine: number;
 }
 
@@ -134,6 +136,9 @@ export function ParseTable(
             .join("") +
         "$");
 
+    // save first separator line offset
+    result.SeparatorLineOffsets.push(startLine);
+
     // continue to scan until a complete table is found, or an invalid line is encountered
     let currentRow = [];
     let currentLine = startLine + 1;
@@ -147,6 +152,9 @@ export function ParseTable(
                 // no row lines since last separator -> invalid table
                 return result;
             }
+
+            // save separator line offset
+            result.SeparatorLineOffsets.push(currentLine);
 
             if (line == rowLine) {
                 // new regular row
@@ -250,24 +258,31 @@ export function EmitTable(
     state: IMarkdownItState,
     result: ParseTableResult) {
 
-    state.push('table_open', 'table', 1);
+    let offsets = result.SeparatorLineOffsets;
+
+    let token = state.push('table_open', 'table', 1);
+    token.map = [offsets[0], offsets[offsets.length - 1]];
 
     if (result.HeaderLines.length > 0) {
         // emit table header
-        state.push('thead_open', 'thead', 1);
+        let token = state.push('thead_open', 'thead', 1);
+        token.map = [offsets[0], offsets[1]];
 
         let cells = GetCells(
             result.ColumnWidths,
             result.ColumnOffsets,
             result.HeaderLines);
 
-        ProcessRow(md, state, 'th', result.ColumnAlignments, cells);
+        ProcessRow(md, state, 'th', result.ColumnAlignments, offsets[0], offsets[1], cells);
 
         state.push('thead_close', 'thead', -1);
+
+        offsets = offsets.slice(1);
     }
 
     // emit table body
-    state.push('tbody_open', 'tbody', 1);
+    token = state.push('tbody_open', 'tbody', 1);
+    token.map = [offsets[0], offsets[offsets.length - 1]];
 
     for (let i = 0; i < result.RowLines.length; i++) {
         let cells = GetCells(
@@ -275,7 +290,7 @@ export function EmitTable(
             result.ColumnOffsets,
             result.RowLines[i]);
 
-        ProcessRow(md, state, 'td', result.ColumnAlignments, cells);
+        ProcessRow(md, state, 'td', result.ColumnAlignments, offsets[i], offsets[i + 1], cells);
     }
 
     state.push('tbody_close', 'tbody', -1);
@@ -288,15 +303,19 @@ function ProcessRow(
     state: IMarkdownItState,
     tag: string,
     columnAlignments: ColumnAlignments[],
+    lineBegin: number,
+    lineEnd: number,
     cells: string[][]) {
 
-    state.push('tr_open', 'tr', 1);
+    let token = state.push('tr_open', 'tr', 1);
+    token.map = [lineBegin, lineEnd];
 
     for (let i = 0; i < cells.length; i++) {
         let token = state.push(tag + '_open', tag, 1);
+        token.map = [lineBegin + 1, lineEnd - 1];
 
         if (columnAlignments[i] != ColumnAlignments.None) {
-            token.attrs = [["style", `text-align: ${columnAlignments[i]};`]];
+            token.attrSet("style", `text-align: ${columnAlignments[i]};`);
         }
 
         if (cells[i].length == 0) {

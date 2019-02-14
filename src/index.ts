@@ -1,6 +1,8 @@
 import { GridTableRule } from "./rules/gridtable";
 
-export = function (md: any, options: any) {
+export * from "./common/gridtables-util";
+
+export function GridTableRulePlugin(md: any, options: any) {
     md.block.ruler.before(
         "table",
         "gridtable",

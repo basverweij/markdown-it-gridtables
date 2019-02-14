@@ -1,3 +1,18 @@
+export function GetColumnWidths(
+    separatorLine: string):
+    number[] {
+
+    let columnMatch = separatorLine
+        .substr(1)
+        .match(/[:-][-]+[:-]\+/g);
+
+    if (columnMatch == null) {
+        return [];
+    }
+
+    return columnMatch.map(s => s.length);
+}
+
 export function GetCells(
     columnWidths: number[],
     columnOffsets: number[],

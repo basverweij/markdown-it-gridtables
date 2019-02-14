@@ -1,14 +1,14 @@
 import { expect } from "chai";
 import { readFile } from './common';
 import MarkdownIt = require("markdown-it");
-import GridTable = require("../src");
+import { GridTableRulePlugin } from "../src";
 
 describe("gridtable rule", () => {
 
     it("should parse markdown with gridtables", () => {
         let md = MarkdownIt();
 
-        md.use(GridTable);
+        md.use(GridTableRulePlugin);
 
         let input = readFile("./test/basic.md");
 
@@ -22,7 +22,7 @@ describe("gridtable rule", () => {
     it("should parse gridtables with column alignments", () => {
         let md = MarkdownIt();
 
-        md.use(GridTable);
+        md.use(GridTableRulePlugin);
 
         let input = readFile("./test/col-align.md");
 
@@ -36,7 +36,7 @@ describe("gridtable rule", () => {
     it("should handle invalid input", () => {
         let md = MarkdownIt();
 
-        md.use(GridTable);
+        md.use(GridTableRulePlugin);
 
         let data = readFile("./test/invalid.md");
 

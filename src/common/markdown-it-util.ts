@@ -1,5 +1,5 @@
 import { IMarkdownItState } from "../interfaces/IMarkdownItState";
-import { GetCells } from "./gridtables-util";
+import { GetCells, GetColumnWidths } from "./gridtables-util";
 import * as MarkdownIt from "markdown-it";
 
 export function GetLine(
@@ -79,24 +79,15 @@ export function ParseTable(
         return result;
     }
 
-    let columnMatch = rowLine
-        .substr(1)
-        .match(/[:-][-]+[:-]\+/g);
+    result.ColumnWidths = GetColumnWidths(rowLine);
 
-    if (columnMatch == null) {
-        return result;
-    }
-
-    result.ColumnWidths = columnMatch
-        .map(s => s.length);
-
-    result.ColumnAlignments = columnMatch
-        .map(_ => ColumnAlignments.None);
-
-    if (result.ColumnWidths.length < 1) {
+    if (result.ColumnWidths.length == 0) {
         // no columns found
         return result;
     }
+
+    result.ColumnAlignments = result.ColumnWidths
+        .map(_ => ColumnAlignments.None);
 
     if (rowLine.indexOf(":") >= 0) {
         // column alignment specifiers present in first row line

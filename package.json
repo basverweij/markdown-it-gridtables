@@ -41,6 +41,7 @@
       "src/**/*.ts"
     ],
     "reporter": [
+      "lcov",
       "html"
     ],
     "all": true

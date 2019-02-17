@@ -19,15 +19,31 @@
     "@types/mocha": "^5.2.5",
     "@types/node": "^10.12.21",
     "chai": "^4.2.0",
+    "coveralls": "^3.0.2",
     "mocha": "^5.2.0",
+    "nyc": "^13.3.0",
     "rimraf": "^2.6.3",
+    "source-map-support": "^0.5.10",
     "ts-node": "^8.0.2",
     "typescript": "^3.3.1"
   },
   "scripts": {
-    "clean": "rimraf dist",
+    "clean": "rimraf .nyc_output coverage dist",
     "build": "tsc",
-    "test": "mocha -r ts-node/register test/**/*.spec.ts"
+    "test": "nyc mocha"
+  },
+  "nyc": {
+    "extension": [
+      ".ts",
+      ".tsx"
+    ],
+    "include": [
+      "src/**/*.ts"
+    ],
+    "reporter": [
+      "html"
+    ],
+    "all": true
   },
   "repository": {
     "type": "git",

@@ -10,8 +10,9 @@
         },
         "**/*.js.map": true,
         "node_modules": true,
-        "tmp": true,
-        "package-lock.json": true
+        "package-lock.json": true,
+        ".nyc_output": true,
+        "coverage": true
     },
     "mocha.requires": [
         "ts-node/register"

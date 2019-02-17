@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "MarkdownIt plugin for Pandoc Grid Tables",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
@@ -10,21 +11,22 @@
     "test": "test"
   },
   "dependencies": {
-    "ts-node": "^8.0.2"
+    "@types/markdown-it": "0.0.7",
+    "markdown-it": "^8.4.2"
   },
   "devDependencies": {
-    "@types/markdown-it": "0.0.7",
+    "@types/chai": "^4.1.7",
     "@types/mocha": "^5.2.5",
     "@types/node": "^10.12.21",
     "chai": "^4.2.0",
-    "gulp": "^4.0.0",
-    "gulp-mocha": "^6.0.0",
-    "gulp-typescript": "^5.0.0",
-    "markdown-it": "^8.4.2",
     "mocha": "^5.2.0",
+    "rimraf": "^2.6.3",
+    "ts-node": "^8.0.2",
     "typescript": "^3.3.1"
   },
   "scripts": {
+    "clean": "rimraf dist",
+    "build": "tsc",
     "test": "mocha -r ts-node/register test/**/*.spec.ts"
   },
   "repository": {

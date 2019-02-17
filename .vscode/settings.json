@@ -8,7 +8,10 @@
         "**/*.js": {
             "when": "$(basename).ts"
         },
-        "**/*.js.map": true
+        "**/*.js.map": true,
+        "node_modules": true,
+        "tmp": true,
+        "package-lock.json": true
     },
     "mocha.requires": [
         "ts-node/register"

@@ -1,39 +1,46 @@
-import { IMarkdownItState } from "../interfaces/IMarkdownItState";
-import { GetCharCodeAtStartOfLine, ParseTable, EmitTable } from "../common/markdown-it-util";
 import * as MarkdownIt from "markdown-it";
+import IState from "../interfaces/markdown-it/IState";
+import TRuleFunction from "../interfaces/markdown-it/TRuleFunction";
+import emitTable from "../common/markdown-it/EmitTable";
+import getCharCodeAtStartOfLine from "../common/markdown-it/GetCharCodeAtStartOfLine";
+import parseTable from "../common/markdown-it/ParseTable";
 
-type RuleFunction = (
-    state: IMarkdownItState,
-    startLine: number,
-    endLine: number,
-    silent: boolean) => boolean;
-
-export function GridTableRule(
-    md: MarkdownIt):
-    RuleFunction {
-
+export default function gridTableRule(
+    md: MarkdownIt
+): TRuleFunction
+{
     return function (
-        state: IMarkdownItState,
+        state: IState,
         startLine: number,
         endLine: number,
-        silent: boolean): boolean {
-
-        if (GetCharCodeAtStartOfLine(state, startLine) != 0x2B) {
+        silent: boolean
+    ): boolean
+    {
+        if (getCharCodeAtStartOfLine(state, startLine) != 0x2B)
+        {
             // line does not start with a '+'
             return false;
         }
 
-        let parseResult = ParseTable(state, startLine, endLine);
+        let parseResult = parseTable(
+            state,
+            startLine,
+            endLine);
 
-        if (!parseResult.Success) {
+        if (!parseResult.Success)
+        {
             return false;
         }
 
-        if (silent) {
+        if (silent)
+        {
             return true;
         }
 
-        EmitTable(md, state, parseResult);
+        emitTable(
+            md,
+            state,
+            parseResult);
 
         state.line = parseResult.CurrentLine;
 

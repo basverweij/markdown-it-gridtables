@@ -1,3 +1,8 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Bas Verweij. All rights reserved.
+ *  Licensed under the MIT License. See LICENSE in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
 import IState from "../../interfaces/markdown-it/IState";
 import ColumnAlignments from "./ColumnAlignments";
 import ParseTableResult from "./ParseTableResult";

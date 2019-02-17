@@ -1,11 +1,16 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Bas Verweij. All rights reserved.
+ *  Licensed under the MIT License. See LICENSE in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
 /**
- * getCells parses the lines found for a certain row, and transforms these to
- * the separate cell lines.
- * 
- * @param columnWidths The column widths for this table.
- * @param columnOffsets The absolute column offsets for this table. 
- * @param lines The lines for the row.
- */
+* getCells parses the lines found for a certain row, and transforms these to
+* the separate cell lines.
+* 
+* @param columnWidths The column widths for this table.
+* @param columnOffsets The absolute column offsets for this table. 
+* @param lines The lines for the row.
+*/
 export default function getCells(
     columnWidths: number[],
     columnOffsets: number[],

@@ -1,0 +1,64 @@
+{
+  "name": "markdown-it-gridtables",
+  "version": "0.1.0",
+  "description": "MarkdownIt plugin for Pandoc Grid Tables",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "@types/markdown-it": "0.0.7",
+    "markdown-it": "^8.4.2"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/mocha": "^5.2.5",
+    "@types/node": "^10.12.21",
+    "chai": "^4.2.0",
+    "coveralls": "^3.0.2",
+    "mocha": "^5.2.0",
+    "nyc": "^13.3.0",
+    "rimraf": "^2.6.3",
+    "source-map-support": "^0.5.10",
+    "ts-node": "^8.0.2",
+    "typescript": "^3.3.1"
+  },
+  "scripts": {
+    "clean": "rimraf .nyc_output coverage dist",
+    "build": "tsc",
+    "test": "nyc mocha"
+  },
+  "nyc": {
+    "extension": [
+      ".ts",
+      ".tsx"
+    ],
+    "include": [
+      "src/**/*.ts"
+    ],
+    "reporter": [
+      "lcov",
+      "html"
+    ],
+    "all": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/basverweij/markdown-it-gridtables.git"
+  },
+  "keywords": [
+    "markdown-it",
+    "plugin",
+    "gridtables"
+  ],
+  "author": "Bas Verweij",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/basverweij/markdown-it-gridtables/issues"
+  },
+  "homepage": "https://github.com/basverweij/markdown-it-gridtables#readme"
+}

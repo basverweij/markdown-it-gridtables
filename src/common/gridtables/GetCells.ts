@@ -27,7 +27,7 @@ export default function getCells(
         {
             const s = lines[j]
                 .substr(columnOffsets[i] + 1, columnWidths[i] - 1)
-                .trim();
+                .trimRight();
 
             if ((s.length == 0) &&
                 (cell.length == 0))

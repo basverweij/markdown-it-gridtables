@@ -7,7 +7,7 @@
 | *Fruit*       | * Price       | **Advantages**     |
 +===============+===============+====================+
 | Bananas       | $1.34         | - built-in wrapper |
-| - abc         |               | - bright color     |
+| - abc         |               |   - bright color   |
 +---------------+---------------+--------------------+
 | Oranges       | $2.10         | - cures scurvy     |
 | 1. def        |               | - tasty            |

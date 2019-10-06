@@ -11,21 +11,21 @@
     "test": "test"
   },
   "dependencies": {
-    "@types/markdown-it": "0.0.7",
-    "markdown-it": "^8.4.2"
+    "@types/markdown-it": "0.0.9",
+    "markdown-it": "^10.0.0"
   },
   "devDependencies": {
-    "@types/chai": "^4.1.7",
-    "@types/mocha": "^5.2.5",
-    "@types/node": "^10.12.21",
+    "@types/chai": "^4.2.3",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^12.7.11",
     "chai": "^4.2.0",
-    "coveralls": "^3.0.2",
-    "mocha": "^5.2.0",
-    "nyc": "^13.3.0",
-    "rimraf": "^2.6.3",
-    "source-map-support": "^0.5.10",
-    "ts-node": "^8.0.2",
-    "typescript": "^3.3.1"
+    "coveralls": "^3.0.6",
+    "mocha": "^6.2.1",
+    "nyc": "^14.1.1",
+    "rimraf": "^3.0.0",
+    "source-map-support": "^0.5.13",
+    "ts-node": "^8.4.1",
+    "typescript": "^3.6.3"
   },
   "scripts": {
     "clean": "rimraf .nyc_output coverage dist",

@@ -54,4 +54,19 @@ describe("gridtable rule", () =>
 
         expect(actual).to.equal(expected);
     });
+
+    it("should parse tables with links", () =>
+    {
+        const md = MarkdownIt();
+
+        md.use(gridTableRulePlugin);
+
+        const data = readFile("./test/test-1.md");
+
+        const actual = md.render(data);
+
+        const expected = readFile("./test/test-1.md.html");
+
+        expect(actual).to.equal(expected);
+    });
 });

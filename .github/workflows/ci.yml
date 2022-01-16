@@ -15,10 +15,10 @@ jobs:
 
       - name: Build
         run: |
-        npm install
-        npm run clean
-        npm run build
-        npm run test
+          npm install
+          npm run clean
+          npm run build
+          npm run test
 
       - name: Code Coverage
         uses: coverallsapp/github-action@master

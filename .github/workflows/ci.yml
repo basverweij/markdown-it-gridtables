@@ -1,0 +1,26 @@
+name: CI
+
+on: [push]
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup NodeJS 16
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+
+      - name: Build
+        run: |
+          npm install
+          npm run clean
+          npm run build
+          npm run test
+
+      - name: Code Coverage
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}

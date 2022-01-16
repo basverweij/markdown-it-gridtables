@@ -1,6 +1,6 @@
 {
   "name": "markdown-it-gridtables",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "description": "MarkdownIt plugin for Pandoc Grid Tables",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -11,19 +11,19 @@
     "test": "test"
   },
   "dependencies": {
-    "@types/markdown-it": "0.0.9",
-    "markdown-it": "^10.0.0"
+    "@types/markdown-it": "^12.2.3",
+    "markdown-it": "^12.3.2"
   },
   "devDependencies": {
-    "@types/chai": "^4.2.11",
+    "@types/chai": "^4.3.0",
     "@types/mocha": "^5.2.7",
     "@types/node": "^12.12.35",
-    "chai": "^4.2.0",
+    "chai": "^4.3.4",
     "coveralls": "^3.0.11",
     "mocha": "^6.2.3",
     "nyc": "^14.1.1",
-    "rimraf": "^3.0.0",
-    "source-map-support": "^0.5.16",
+    "rimraf": "^3.0.2",
+    "source-map-support": "^0.5.21",
     "ts-node": "^8.8.2",
     "typescript": "^3.8.3"
   },

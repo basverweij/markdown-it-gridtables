@@ -5,9 +5,9 @@
 
 import * as MarkdownIt from "markdown-it";
 import IState from "../../interfaces/markdown-it/IState";
+import getCells from "../gridtables/GetCells";
 import ColumnAlignments from "./ColumnAlignments";
 import ParseTableResult from "./ParseTableResult";
-import getCells from "../gridtables/GetCells";
 
 export default function emitTable(
     md: MarkdownIt,
@@ -73,16 +73,16 @@ function processRow(
         let token = state.push(tag + '_open', tag, 1);
         token.map = [lineBegin + 1, lineEnd - 1];
 
-        if (columnAlignments[i] != ColumnAlignments.None)
+        if (columnAlignments[i] !== ColumnAlignments.None)
         {
             token.attrSet("style", `text-align: ${columnAlignments[i]};`);
         }
 
-        if (cells[i].length == 0)
+        if (cells[i].length === 0)
         {
             // empty cell
         }
-        else if (cells[i].length == 1)
+        else if (cells[i].length === 1)
         {
             // single line cell -> emit as inline markdown
             let token = state.push('inline', '', 0);
@@ -97,11 +97,11 @@ function processRow(
                 .trim();
 
             // remove single p tag because we're in a table cell
-            if ((cell.substr(0, 3) == '<p>') &&
-                (cell.substr(cell.length - 4, 4) == '</p>') &&
-                (cell.indexOf('<p>', 3) == -1))
+            if ((cell.slice(0, 3) === '<p>') &&
+                (cell.slice(-4) === '</p>') &&
+                (cell.indexOf('<p>', 3) === -1))
             {
-                cell = cell.substr(3, cell.length - 7);
+                cell = cell.slice(3, cell.length - 4);
             }
 
             let token = state.push('html_block', '', 0);

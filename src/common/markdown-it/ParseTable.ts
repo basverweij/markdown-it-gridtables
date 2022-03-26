@@ -4,10 +4,10 @@
  *--------------------------------------------------------------------------------------------*/
 
 import IState from "../../interfaces/markdown-it/IState";
-import ColumnAlignments from "./ColumnAlignments";
-import ParseTableResult from "./ParseTableResult";
 import getColumnWidths from "../gridtables/GetColumnWidths";
+import ColumnAlignments from "./ColumnAlignments";
 import getLine from "./GetLine";
+import ParseTableResult from "./ParseTableResult";
 
 export default function parseTable(
     state: IState,
@@ -19,7 +19,7 @@ export default function parseTable(
 
     let rowLine = getLine(state, startLine);
 
-    if (rowLine.charAt(0) != "+")
+    if (rowLine.charAt(0) !== "+")
     {
         // line does not start with a '+'
         return result;
@@ -27,7 +27,7 @@ export default function parseTable(
 
     result.ColumnWidths = getColumnWidths(rowLine);
 
-    if (result.ColumnWidths.length == 0)
+    if (result.ColumnWidths.length === 0)
     {
         // no columns found
         return result;
@@ -88,10 +88,10 @@ export default function parseTable(
     {
         const line = getLine(state, currentLine);
 
-        if (line.charCodeAt(0) == 0x2B) // '+'
+        if (line.charCodeAt(0) === 0x2B) // '+'
         {
             // separator line
-            if (currentRow.length == 0)
+            if (currentRow.length === 0)
             {
                 // no row lines since last separator -> invalid table
                 return result;
@@ -100,12 +100,12 @@ export default function parseTable(
             // save separator line offset
             result.SeparatorLineOffsets.push(currentLine);
 
-            if (line == rowLine)
+            if (line === rowLine)
             {
                 // new regular row
                 result.RowLines.push(currentRow);
 
-                if (result.HeaderLines.length == 0)
+                if (result.HeaderLines.length === 0)
                 {
                     result.HeaderLess = true;
                 }
@@ -139,7 +139,7 @@ export default function parseTable(
             // reset current row
             currentRow = [];
         }
-        else if (line.charCodeAt(0) == 0x7C) // '|'
+        else if (line.charCodeAt(0) === 0x7C) // '|'
         {
             // cell line
             if (!line.match(cellLineMatcher))
@@ -154,7 +154,7 @@ export default function parseTable(
         else
         {
             // not a separator or cell line, check if we have a complete table
-            if (currentRow.length == 0 &&
+            if (currentRow.length === 0 &&
                 ((result.HeaderLines.length > 0) ||
                     (result.RowLines.length > 0)))
             {
@@ -190,16 +190,16 @@ function getColumnAlignments(
 
         let alignment = ColumnAlignments.None;
 
-        if (line.charAt(right) == ":")
+        if (line.charAt(right) === ":")
         {
-            if (line.charAt(left) == ":")
+            if (line.charAt(left) === ":")
             {
                 alignment = ColumnAlignments.Center;
             } else
             {
                 alignment = ColumnAlignments.Right;
             }
-        } else if (line.charAt(left) == ":")
+        } else if (line.charAt(left) === ":")
         {
             alignment = ColumnAlignments.Left;
         }

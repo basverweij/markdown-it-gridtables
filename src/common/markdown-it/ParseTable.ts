@@ -19,7 +19,7 @@ export default function parseTable(
 
     let rowLine = getLine(state, startLine);
 
-    if (rowLine.charAt(0) !== "+")
+    if (rowLine.charAt(0) !== '+')
     {
         // line does not start with a '+'
         return result;
@@ -37,7 +37,7 @@ export default function parseTable(
     result.ColumnAlignments = result.ColumnWidths
         .map(_ => ColumnAlignments.None);
 
-    if (rowLine.indexOf(":") >= 0)
+    if (rowLine.indexOf(':') >= 0)
     {
         // column alignment specifiers present in first row line
         result.HeaderLess = true;
@@ -48,16 +48,16 @@ export default function parseTable(
             result.ColumnWidths);
 
         // remove alignment specifiers for further matching
-        rowLine = rowLine.replace(/[:]/g, "-");
+        rowLine = rowLine.replace(/[:]/g, '-');
     }
 
     // create header line matcher
     const headerLineMatcher = new RegExp(
-        "^\\+" +
+        '^\\+' +
         result.ColumnWidths
-            .map(w => "[=:][=]{" + (w - 3) + "}[=:]\\+")
-            .join("") +
-        "$");
+            .map(w => `[=:][=]{${w - 3}}[=:]\\+`)
+            .join('') +
+        '$');
 
     // build column offsets
     result.ColumnOffsets = [0];
@@ -71,11 +71,11 @@ export default function parseTable(
 
     // create cell line matcher
     const cellLineMatcher = new RegExp(
-        "^\\|" +
+        '^\\|' +
         result.ColumnWidths
-            .map(w => "[^|]{" + (w - 1) + "}\\|")
-            .join("") +
-        "$");
+            .map(w => `[^|]{${Math.ceil((w - 1) / 2)},${w - 1}}\\|`)
+            .join('') +
+        '$');
 
     // save first separator line offset
     result.SeparatorLineOffsets.push(startLine);
@@ -123,7 +123,7 @@ export default function parseTable(
                 // header row
                 result.HeaderLines = currentRow;
 
-                if (line.indexOf(":") >= 0)
+                if (line.indexOf(':') >= 0)
                 {
                     // set column alignments
                     result.ColumnAlignments = getColumnAlignments(
@@ -190,16 +190,16 @@ function getColumnAlignments(
 
         let alignment = ColumnAlignments.None;
 
-        if (line.charAt(right) === ":")
+        if (line.charAt(right) === ':')
         {
-            if (line.charAt(left) === ":")
+            if (line.charAt(left) === ':')
             {
                 alignment = ColumnAlignments.Center;
             } else
             {
                 alignment = ColumnAlignments.Right;
             }
-        } else if (line.charAt(left) === ":")
+        } else if (line.charAt(left) === ':')
         {
             alignment = ColumnAlignments.Left;
         }

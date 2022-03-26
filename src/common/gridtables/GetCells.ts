@@ -26,9 +26,9 @@ export default function getCells(
         for (let j = 0; j < lines.length; j++)
         {
             const s = trimEnd(
-                lines[j].substr(
+                lines[j].slice(
                     columnOffsets[i] + 1,
-                    columnWidths[i] - 1));
+                    columnOffsets[i] + columnWidths[i]));
 
             if ((s.length === 0) &&
                 (cell.length === 0))

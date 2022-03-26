@@ -1,6 +1,6 @@
 {
   "name": "markdown-it-gridtables",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "MarkdownIt plugin for Pandoc Grid Tables",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

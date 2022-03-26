@@ -3,6 +3,7 @@
  *  Licensed under the MIT License. See LICENSE in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
+import wcwidth = require("wcwidth");
 import IState from "../../interfaces/markdown-it/IState";
 import getColumnWidths from "../gridtables/GetColumnWidths";
 import ColumnAlignments from "./ColumnAlignments";
@@ -73,7 +74,7 @@ export default function parseTable(
     const cellLineMatcher = new RegExp(
         '^\\|' +
         result.ColumnWidths
-            .map(w => `[^|]{${Math.ceil((w - 1) / 2)},${w - 1}}\\|`)
+            .map(w => `([^|]{${Math.ceil((w - 1) / 2)},${w - 1}})\\|`)
             .join('') +
         '$');
 
@@ -142,7 +143,18 @@ export default function parseTable(
         else if (line.charCodeAt(0) === 0x7C) // '|'
         {
             // cell line
-            if (!line.match(cellLineMatcher))
+
+            const matches = line.match(cellLineMatcher);
+
+            if (matches === null)
+            {
+                // cell line does not match -> invalid table
+                return result;
+            }
+
+            if (!hasValidColumnWidths(
+                matches,
+                result.ColumnWidths))
             {
                 // cell line does not match -> invalid table
                 return result;
@@ -210,4 +222,22 @@ function getColumnAlignments(
     }
 
     return alignments;
+}
+
+function hasValidColumnWidths(
+    matches: RegExpMatchArray,
+    columnWidths: number[],
+): boolean
+{
+    for (var i = 0; i < columnWidths.length; i++)
+    {
+        const columnWidth = wcwidth(matches[i + 1]) + 1; // add 1 for separator
+
+        if (columnWidth !== columnWidths[i])
+        {
+            return false;
+        }
+    }
+
+    return true;
 }

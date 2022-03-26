@@ -69,4 +69,19 @@ describe("gridtable rule", () =>
 
         expect(actual).to.equal(expected);
     });
+
+    it("should parse tables with multi-column characters", () =>
+    {
+        const md = MarkdownIt();
+
+        md.use(gridTableRulePlugin);
+
+        const data = readFile("./test/multi-column-characters.md");
+
+        const actual = md.render(data);
+
+        const expected = readFile("./test/multi-column-characters.md.html");
+
+        expect(actual).to.equal(expected);
+    });
 });

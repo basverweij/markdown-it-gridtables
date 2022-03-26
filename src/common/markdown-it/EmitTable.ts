@@ -25,10 +25,7 @@ export default function emitTable(
         const token = state.push('thead_open', 'thead', 1);
         token.map = [offsets[0], offsets[1]];
 
-        const cells = getCells(
-            result.ColumnWidths,
-            result.ColumnOffsets,
-            result.HeaderLines);
+        const cells = getCells(result.HeaderLines);
 
         processRow(md, state, 'th', result.ColumnAlignments, offsets[0], offsets[1], cells);
 
@@ -43,10 +40,7 @@ export default function emitTable(
 
     for (let i = 0; i < result.RowLines.length; i++)
     {
-        let cells = getCells(
-            result.ColumnWidths,
-            result.ColumnOffsets,
-            result.RowLines[i]);
+        let cells = getCells(result.RowLines[i]);
 
         processRow(md, state, 'td', result.ColumnAlignments, offsets[i], offsets[i + 1], cells);
     }

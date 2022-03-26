@@ -7,28 +7,21 @@
 * getCells parses the lines found for a certain row, and transforms these to
 * the separate cell lines.
 * 
-* @param columnWidths The column widths for this table.
-* @param columnOffsets The absolute column offsets for this table. 
 * @param lines The lines for the row.
 */
 export default function getCells(
-    columnWidths: number[],
-    columnOffsets: number[],
-    lines: string[]):
+    lines: string[][]):
     string[][]
 {
     const cells = [];
 
-    for (let i = 0; i < columnWidths.length; i++)
+    for (let i = 0; i < lines[0].length; i++)
     {
         let cell = [];
 
         for (let j = 0; j < lines.length; j++)
         {
-            const s = trimEnd(
-                lines[j].slice(
-                    columnOffsets[i] + 1,
-                    columnOffsets[i] + columnWidths[i]));
+            const s = trimEnd(lines[j][i]);
 
             if ((s.length === 0) &&
                 (cell.length === 0))

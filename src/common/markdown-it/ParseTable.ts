@@ -82,7 +82,7 @@ export default function parseTable(
     result.SeparatorLineOffsets.push(startLine);
 
     // continue to scan until a complete table is found, or an invalid line is encountered
-    let currentRow = [];
+    let currentRow: string[][] = [];
     let currentLine = startLine + 1;
 
     for (; currentLine <= endLine; currentLine++)
@@ -152,16 +152,18 @@ export default function parseTable(
                 return result;
             }
 
-            if (!hasValidColumnWidths(
+            const cells = validateColumnWidths(
                 matches,
-                result.ColumnWidths))
+                result.ColumnWidths);
+
+            if (cells === null)
             {
                 // cell line does not match -> invalid table
                 return result;
             }
 
             // add the line to the current row
-            currentRow.push(line);
+            currentRow.push(cells);
         }
         else
         {
@@ -224,20 +226,26 @@ function getColumnAlignments(
     return alignments;
 }
 
-function hasValidColumnWidths(
+function validateColumnWidths(
     matches: RegExpMatchArray,
     columnWidths: number[],
-): boolean
+): string[] | null
 {
+    const cells: string[] = [];
+
     for (var i = 0; i < columnWidths.length; i++)
     {
-        const columnWidth = wcwidth(matches[i + 1]) + 1; // add 1 for separator
+        const cell = matches[i + 1];
+
+        const columnWidth = wcwidth(cell) + 1; // add 1 for separator
 
         if (columnWidth !== columnWidths[i])
         {
-            return false;
+            return null;
         }
+
+        cells.push(cell);
     }
 
-    return true;
+    return cells;
 }

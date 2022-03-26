@@ -17,9 +17,9 @@ export default class ParseTableResult
 
     HeaderLess: boolean = false;
 
-    HeaderLines: string[] = [];
+    HeaderLines: string[][] = [];
 
-    RowLines: string[][] = [];
+    RowLines: string[][][] = [];
 
     SeparatorLineOffsets: number[] = [];
 

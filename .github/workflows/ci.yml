@@ -19,6 +19,7 @@ jobs:
           npm run clean
           npm run build
           npm run test
+          npm run coverage
 
       - name: Code Coverage
         uses: coverallsapp/github-action@master

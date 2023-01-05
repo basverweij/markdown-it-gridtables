@@ -1,66 +1,67 @@
 {
-  "name": "markdown-it-gridtables",
-  "version": "0.4.0",
-  "description": "MarkdownIt plugin for Pandoc Grid Tables",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
-  "directories": {
-    "test": "test"
-  },
-  "dependencies": {
-    "@types/markdown-it": "^12.2.3",
-    "markdown-it": "^12.3.2",
-    "wcwidth": "^1.0.1"
-  },
-  "devDependencies": {
-    "@types/chai": "^4.3.0",
-    "@types/mocha": "^5.2.7",
-    "@types/node": "^12.12.35",
-    "@types/wcwidth": "^1.0.0",
-    "chai": "^4.3.4",
-    "coveralls": "^3.0.11",
-    "mocha": "^6.2.3",
-    "nyc": "^14.1.1",
-    "rimraf": "^3.0.2",
-    "source-map-support": "^0.5.21",
-    "ts-node": "^8.8.2",
-    "typescript": "^3.8.3"
-  },
-  "scripts": {
-    "clean": "rimraf .nyc_output coverage dist",
-    "build": "tsc",
-    "test": "nyc mocha"
-  },
-  "nyc": {
-    "extension": [
-      ".ts",
-      ".tsx"
+    "name": "markdown-it-gridtables",
+    "version": "0.6.0",
+    "description": "MarkdownIt plugin for Pandoc Grid Tables",
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "files": [
+        "dist"
     ],
-    "include": [
-      "src/**/*.ts"
+    "directories": {
+        "test": "test"
+    },
+    "dependencies": {
+        "markdown-it": "^13.0.1",
+        "wcwidth": "^1.0.1"
+    },
+    "devDependencies": {
+        "@types/chai": "^4.3.4",
+        "@types/markdown-it": "^12.2.3",
+        "@types/mocha": "^10.0.1",
+        "@types/node": "^18.11.18",
+        "@types/wcwidth": "^1.0.0",
+        "chai": "^4.3.7",
+        "coveralls": "^3.1.1",
+        "mocha": "^10.2.0",
+        "nyc": "^15.1.0",
+        "rimraf": "^3.0.2",
+        "source-map-support": "^0.5.21",
+        "ts-node": "^10.9.1",
+        "typescript": "^4.9.4"
+    },
+    "scripts": {
+        "clean": "rimraf .nyc_output coverage dist",
+        "build": "tsc",
+        "test": "mocha --require ts-node/register --require source-map-support/register --recursive 'test/**/*.spec.ts'",
+        "coverage": "nyc npm run test"
+    },
+    "nyc": {
+        "extension": [
+            ".ts",
+            ".tsx"
+        ],
+        "include": [
+            "src/**/*.ts"
+        ],
+        "reporter": [
+            "lcov",
+            "html"
+        ],
+        "all": true
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/basverweij/markdown-it-gridtables.git"
+    },
+    "keywords": [
+        "markdown-it",
+        "plugin",
+        "gridtables"
     ],
-    "reporter": [
-      "lcov",
-      "html"
-    ],
-    "all": true
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/basverweij/markdown-it-gridtables.git"
-  },
-  "keywords": [
-    "markdown-it",
-    "plugin",
-    "gridtables"
-  ],
-  "author": "Bas Verweij",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/basverweij/markdown-it-gridtables/issues"
-  },
-  "homepage": "https://github.com/basverweij/markdown-it-gridtables#readme"
+    "author": "Bas Verweij",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/basverweij/markdown-it-gridtables/issues"
+    },
+    "homepage": "https://github.com/basverweij/markdown-it-gridtables#readme"
 }
